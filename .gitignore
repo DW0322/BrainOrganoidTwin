@@ -1,0 +1,13 @@
+# Build output
+build/
+
+# Simulation data outputs
+data/
+
+# Editor / OS noise
+*.swp
+.DS_Store
+
+# Python
+viz/__pycache__/
+*.pyc
