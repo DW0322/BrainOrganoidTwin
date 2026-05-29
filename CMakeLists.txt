@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(BrainOrganoidTwin
   src/Main.cpp
-  src/print.cpp
+  src/SEM.cpp
 )
 
 target_include_directories(BrainOrganoidTwin

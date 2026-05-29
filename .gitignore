@@ -11,3 +11,5 @@ data/
 # Python
 viz/__pycache__/
 *.pyc
+
+compile_commands.json

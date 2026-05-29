@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist
 
-df = pd.read_csv("~/Capstone/build/data.csv")
+df = pd.read_csv("~/BrainOrganoidTwin/build/data.csv")
 final = df[df["step"] == df["step"].max()]
 
 fig = plt.figure()
