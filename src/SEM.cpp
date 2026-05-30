@@ -61,11 +61,30 @@ void updatePosition(ParticleData &pd, const constants &p)
 }
 
 void writeToFile(ofstream &out, const ParticleData &pd, const int step,
-                 const constants &p)
+                 const constants &p, double U)
 {
   for (int i = 0; i < pd.x.size(); ++i)
   {
     out << step << ',' << i << ',' << pd.cell_id[i] << ',' << pd.x[i] << ','
-        << pd.y[i] << ',' << pd.z[i] << '\n';
+        << pd.y[i] << ',' << pd.z[i] << ',' << U << '\n';
   }
+}
+
+double totalEnergy(const ParticleData &pd, const constants &p)
+{
+  double U = 0.0;
+  for (size_t i = 0; i < pd.cell_id.size(); ++i)
+    for (size_t j = i + 1; j < pd.cell_id.size(); ++j)
+    {
+      double dx = pd.x[j] - pd.x[i], dy = pd.y[j] - pd.y[i],
+             dz = pd.z[j] - pd.z[i];
+      double r = std::sqrt(dx * dx + dy * dy + dz * dz);
+      bool same = pd.cell_id[i] == pd.cell_id[j];
+      double D = same ? p.D_intra : p.D_inter;
+      double a = same ? p.a_intra : p.a_inter;
+      double r0 = same ? p.r0_intra : p.r0_inter;
+      double e = 1.0 - std::exp(-a * (r - r0));
+      U += D * e * e; // Morse well: U = D(1−e^{−a(r−r0)})²
+    }
+  return U;
 }

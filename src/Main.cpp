@@ -34,7 +34,7 @@ int main()
   ofstream out("data.csv");
   if (out.is_open())
   {
-    out << "step,particle,cell_id,x,y,z" << '\n';
+    out << "step,particle,cell_id,x,y,z,totalEnergy" << '\n';
   }
 
   /* -------------------
@@ -49,12 +49,13 @@ int main()
     fill(pd.fz.begin(), pd.fz.end(), 0.0);
 
     force(pd, p);
+    double U = totalEnergy(pd, p);
 
     updatePosition(pd, p);
 
     if (n % 10 == 0)
     {
-      writeToFile(out, pd, n, p);
+      writeToFile(out, pd, n, p, U);
     }
   }
 

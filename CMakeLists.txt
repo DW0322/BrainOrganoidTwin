@@ -6,14 +6,13 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(BrainOrganoidTwin
-  src/Main.cpp
-  src/SEM.cpp
-)
+# --- Core simulation library (shared by app and tests) ---
+add_library(sem_core src/SEM.cpp)
+target_include_directories(sem_core PUBLIC include)
 
-target_include_directories(BrainOrganoidTwin
-  PRIVATE include
-)
+# --- Main application ---
+add_executable(BrainOrganoidTwin src/Main.cpp)
+target_link_libraries(BrainOrganoidTwin PRIVATE sem_core)
 
 # --- Fetch Catch2 automatically (no system install needed) ---
 include(FetchContent)
@@ -24,10 +23,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-# --- The test executable ---
+# --- Test executable ---
 enable_testing()
 add_executable(tests test/test_main.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(tests PRIVATE sem_core Catch2::Catch2WithMain)
 
 # Register with ctest, and let Catch2 auto-discover individual TEST_CASEs
 include(Catch)
